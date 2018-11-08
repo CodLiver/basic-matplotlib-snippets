@@ -59,16 +59,11 @@ class Classifier():
         IN: Image (cv2 format)
         OUT: Label
         """
-
-        #for cv2
-        # images=self.transformations(self.cv2PIL(images)).unsqueeze_(0)
-
-        # if type(images)!="PngImageFile":
-        #     images=self.transformations(self.cv2PIL(images)).unsqueeze_(0)
-        # else:
-        images=self.transformations(images).unsqueeze_(0)
-        correct = 0
-        total = 0
+        if type(images) is np.ndarray:
+            images=self.transformations(self.cv2PIL(images)).unsqueeze_(0)
+        else:
+            images=self.transformations(images).unsqueeze_(0)
+            
         with torch.no_grad():
             images=images.cuda(self.device)
             outputs = self.model(images)
@@ -89,6 +84,5 @@ class Classifier():
             resultsCSV = csv.writer(resultsCSV, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             for eachPicture in totalList:
                 img = Image.open(PATH2BATCH+eachPicture)
-                # img = self.transformations(img)
                 resultsCSV.writerow([eachPicture, self.unitClassifier(img)])
         return "file was created"
