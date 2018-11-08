@@ -1,21 +1,24 @@
-##you can find how to save/load in https://pytorch.org/tutorials/beginner/saving_loading_models.html
+"""you can find how to save/load in https://pytorch.org/tutorials/beginner/saving_loading_models.html"""
 
 import torch
 
-# this is recommended, because if you just save without state_dict(), it may get broken.
+"""this is recommended, because if you just save without state_dict(), it may get broken."""
 torch.save(model.state_dict(), PATH)
 
-##load part
+""""load part"""
 model = TheModelClass(*args, **kwargs)
 model.load_state_dict(torch.load(PATH))
 model.eval()
 
-##general problems with the load part. You might think what is modelclass.
-# its basically a class that has __init__(), forward(). you need to add your previous model/layers to totally load your model.
-# if you use pretrained resnet etc. NOW I AM SEARCHING HOW TO FIND.
+""" #### general problems with the load part. You might think what is modelclass. ###"""
+""" 
+    its basically a class that has __init__(), forward(). you need to add your previous model/layers to totally load your model.
+    if you use pretrained resnet etc.: NOW I AM SEARCHING HOW TO FIND.
+    currently just use the not recommended version which is: save the model with PATH. prone to errors, if the path is broken.
+"""
 
 
-# NORMALIZATION OF IMAGES #
+""" # NORMALIZATION OF IMAGES # """
 
 #some libraries to import
 from torchvision import transforms
@@ -37,8 +40,11 @@ transformations=transforms.Compose([
     normalize,
 ])
 
+# in the end when you deploy your image to your model validation func
+validator(img.unsqueeze_(0))
+# unsqueze() was given because "RuntimeError: expected stride to be a single integer value or a list of 1 values to match the convolution dimensions, but got stride=[2, 2]" error is recieved.
 
-##### OPENCV2 IMAGE FORMAT TO PIL FORMAT ###### 
+""" ##### OPENCV2 IMAGE FORMAT TO PIL FORMAT ###### """
 # sadly sometimes the formats are not compatible :))))))))
 # so this following snippets to change image's cv2 format to PIL format. Useful if you want to normalize as mentioned. If better method outside, please pull request it.
 
@@ -51,7 +57,7 @@ img = Image.fromarray(img)
 # transformation as told.
 img=transformations(img)
 
-## or simply use this. Original PIL open Image.
+""" ## or simply use this. Original PIL open Image. ##"""
 img = Image.open(PATHVAL+exampleImage)
 img = transformations(torch.from_numpy(img))
 
