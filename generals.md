@@ -1,6 +1,6 @@
 # Basic error and general practices:
 
-## 1. Import Class from subfolders in Python3
+## Import Class from subfolders in Python3
 ```
 example path folder:
 main/
@@ -26,8 +26,11 @@ More info:
 * https://docs.python.org/3/tutorial/modules.html
 
 
-## 2. Cv2 Errors:
+## Cv2 Errors:
 If you receive this error, that means your program couldn't find the image you are referring. check ".png" and ".jpg" extensions in your code.
 ```
 cv2.error: OpenCV(3.4.1) C:\projects\opencv-python\opencv\modules\imgproc\src\resize.cpp:4044: error: (-215) ssize.width > 0 && ssize.height > 0 in function cv::resize
 ```
+More info: 
+
+* https://stackoverflow.com/questions/47172770/error-215-ssize-width-0-ssize-height-0-in-function-resize
