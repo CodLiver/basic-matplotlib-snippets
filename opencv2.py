@@ -10,12 +10,9 @@ img = cv2.imread(PATH)
 img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 # cv2 are array, PIL is not array as seen.
 img = Image.fromarray(img)
-# transformation as told.
-img=transformations(img)
 
 """ ## or simply use this. Original PIL open Image. ##"""
 img = Image.open(PATHVAL+exampleImage)
-img = transformations(torch.from_numpy(img))
 
 """ ##### Image Addition ###### """
 "(image1, opacity1, image2, opacity2, gamma value)"
