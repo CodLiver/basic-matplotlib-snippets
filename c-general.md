@@ -42,7 +42,7 @@ structs. define somewhere call later.
 ###if you want to increment array size:
 
 ```
-struct sortCOO *listRes=NULL; //should be NULL
+struct sortCOO *listRes=NULL;malloc(0* sizeof(struct sortCOO)) //should be NULL and this. IDK WHY???
 
 listRes=realloc(listRes, (finalNZ+1) * sizeof(struct sortCOO)); //then realloced
 
