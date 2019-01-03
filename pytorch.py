@@ -41,7 +41,7 @@ transformations=transforms.Compose([
 ])
 
 # in the end when you deploy your image to your model validation func
-validator(img.unsqueeze_(0))
+model(img.unsqueeze_(0))
 # unsqueze() was given because "RuntimeError: expected stride to be a single integer value or a list of 1 values to match the convolution dimensions, but got stride=[2, 2]" error is recieved.
 
 """ ##### OPENCV2 IMAGE FORMAT TO PIL FORMAT ###### """
