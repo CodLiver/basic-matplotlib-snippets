@@ -81,3 +81,45 @@ for each in oldmodel:
 model.load_state_dict(newmodel)
 torch.save(model.state_dict(),"final.m")
 #this to save module.module.COMPONENT that is caused by Data Parallelism
+
+""" How to produce a heatmap by ptrblck"""
+model = models.resnet34(pretrained=True)
+model = model.cuda()
+device = torch.device("cuda")
+model.eval()
+
+trns=transforms.ToTensor()
+images=trns(Image.open("image.png"))
+
+criterion = nn.BCEWithLogitsLoss()
+
+def normalize_output(img):
+    img = img - img.min()
+    img = img / img.max()
+    return img
+
+# Visualize feature maps
+activation = {}
+def get_activation(name):
+    def hook(model, input, output):
+        activation[name] = output.detach()
+    return hook
+
+
+observe="layer4"#conv1 or any layer in the __init__ area.
+model.layer4.register_forward_hook(get_activation(observe))
+
+with torch.no_grad():
+    images=images.cuda(device)
+    images.unsqueeze_(0)
+    output = model(images)
+
+# some representation on plt.
+act = activation[observe].squeeze()
+for each in range(50):
+    fig, axarr = plt.subplots(5)
+    counter=0
+    for idx in range(5*each,5*each+5):
+        axarr[counter].imshow(act[idx].cpu())
+        counter+=1
+    plt.show()
