@@ -6,7 +6,9 @@ import torch
 torch.save(model.state_dict(), PATH)
 
 """"load part"""
-model = TheModelClass(*args, **kwargs)
+model_weights = torch.load("model_weights.m")# like PATH
+model = models.resnet34(pretrained=True)
+# state the model, load it and add the weights
 model.load_state_dict(torch.load(PATH))
 model.eval()
 
@@ -61,4 +63,21 @@ img=transformations(img)
 img = Image.open(PATHVAL+exampleImage)
 img = transformations(torch.from_numpy(img))
 
+""" Data Parallelism"""
+# WHEN YOU HAVE MULTIPLE GPU. YOU DONT. SO DONT USE IT.
+model = torch.nn.DataParallel(model).cuda()
 
+# if you save whole model, it will have module.COMPONENT. this to remove Data Parallelism
+try:
+    state_dict = modell.module.state_dict()
+except AttributeError:
+    state_dict = modell.state_dict()
+# alternatively.
+
+oldmodel=beSavedModel.copy()
+newmodel={}
+for each in oldmodel:
+    newmodel[each[7:]]=beSavedModel.pop(each)
+model.load_state_dict(newmodel)
+torch.save(model.state_dict(),"final.m")
+#this to save module.module.COMPONENT that is caused by Data Parallelism
